@@ -1,0 +1,6 @@
+@BoardsManager.ProjectManagements_HostAddress = http://localhost:5078
+
+GET {{BoardsManager.ProjectManagements_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
