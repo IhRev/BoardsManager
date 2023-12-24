@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BoardsManager.Users.Core\BoardsManager.Users.Core.csproj" />
+    <ProjectReference Include="..\BoardsManager.Users.IoC\BoardsManager.Users.IoC.csproj" />
+  </ItemGroup>
+
 </Project>

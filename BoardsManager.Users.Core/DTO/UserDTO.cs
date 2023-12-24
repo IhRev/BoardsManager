@@ -1,6 +1,6 @@
 ﻿namespace BoardsManager.Users.Core.DTO
 {
-    internal class UserDTO
+    public class UserDTO
     {
         public Guid Id { get; set; }
 
