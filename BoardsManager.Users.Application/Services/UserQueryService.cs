@@ -1,17 +1,32 @@
-﻿using BoardsManager.Users.Core.Abstractions;
+﻿using AutoMapper;
+using BoardsManager.Users.Core.Abstractions;
 using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Domain.Entities;
+using BoardsManager.Users.Domain.Repositories;
 
 namespace BoardsManager.Users.Application.Services
 {
     public class UserQueryService : IUserQueryService
     {
-        public UserQueryService()
-        {
+        private readonly IUserRepository userRepository;
+        private readonly IMapper mapper;
 
-        }
-        public IAsyncEnumerable<UserDTO> GetUsersByProjectId(Guid projectId)
+        public UserQueryService(IUserRepository userRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.userRepository = userRepository;
+            this.mapper = mapper;
+        }
+
+        public IEnumerable<UserDTO> GetUsersByProjectId(string projectId)
+        {
+            IEnumerable<User> users = userRepository.GetUsersByProjectId(projectId);
+            return mapper.Map<IEnumerable<UserDTO>>(users);
+        }
+
+        public async Task<UserDTO?> GetUserById(string id) 
+        {
+            User? user = await userRepository.GetUserByIdAsync(id);
+            return mapper.Map<UserDTO>(user);
         }
     }
 }

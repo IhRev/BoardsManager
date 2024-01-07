@@ -4,6 +4,5 @@ namespace BoardsManager.Users.Core.Abstractions
 {
     public interface IUserRegistrationService
     {
-        Task<Guid> RegisterUser(UserDTO userDTO);
     }
 }

@@ -32,7 +32,7 @@ namespace BoardsManager.Users.Api.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                return GetInternalServerError(e);
             }
         }
 
@@ -46,11 +46,25 @@ namespace BoardsManager.Users.Api.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                return GetInternalServerError(e);
             }
         }
 
-        private StatusCodeResult InternalServerError(Exception e)
+        [HttpPut("add_user_to_project")]
+        public async Task<ActionResult<bool>> AddUserToProject(Guid projectId, Guid userId)
+        {
+            try
+            {
+                bool isAssigned = await userRegistrationService.AssignUserToProject(projectId, userId);
+                return Ok(isAssigned);
+            }
+            catch (Exception e)
+            {
+                return GetInternalServerError(e);
+            }
+        }
+
+        private StatusCodeResult GetInternalServerError(Exception e)
         {
             logger.LogError(e, "Unhandled exception");
             return StatusCode(500);
