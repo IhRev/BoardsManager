@@ -23,7 +23,7 @@ namespace BoardsManager.Users.Application.Services
             return mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public async Task<UserDTO?> GetUserById(string id) 
+        public async Task<UserDTO?> GetUserByIdAsync(string id) 
         {
             User? user = await userRepository.GetUserByIdAsync(id);
             return mapper.Map<UserDTO>(user);

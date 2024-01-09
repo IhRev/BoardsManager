@@ -17,9 +17,9 @@ namespace BoardsManager.Users.Application.Services
             this.mapper = mapper;
         }
 
-        public async Task<bool> AssignUserToProjectAsync(string projectId, string userId)
+        public async Task<bool> AddUserToProjectAsync(string projectId, string userId)
         {
-            User? user = await userRepository.GetUserByIdAsync(userId);
+            User? user = await GetUser(userId);
             if (user == null)
             {
                 return false;
@@ -36,7 +36,7 @@ namespace BoardsManager.Users.Application.Services
 
         public async Task<bool> ChangeUserPasswordAsync(string userId, string currentPassword, string newPassword)
         {
-            User? user = await userRepository.GetUserByIdAsync(userId);
+            User? user = await GetUser(userId);
             if (user == null)
             {
                 return false;
@@ -46,7 +46,7 @@ namespace BoardsManager.Users.Application.Services
 
         public async Task<bool> UpdateUserAsync(UserDTO userDTO)
         {
-            User? user = await userRepository.GetUserByIdAsync(userDTO.Id);
+            User? user = await GetUser(userDTO.Id);
             if (user == null)
             {
                 return false;
@@ -55,5 +55,7 @@ namespace BoardsManager.Users.Application.Services
             user.LastName = userDTO.LastName;
             return await userRepository.UpdateUserAsync(user);
         }
+
+        private Task<User?> GetUser(string userId) => userRepository.GetUserByIdAsync(userId);
     }
 }

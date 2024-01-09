@@ -4,7 +4,7 @@ namespace BoardsManager.Users.Core.Abstractions
 {
     public interface IUserQueryService
     {
-        Task<UserDTO?> GetUserById(string id);
+        Task<UserDTO?> GetUserByIdAsync(string id);
 
         IEnumerable<UserDTO> GetUsersByProjectId(string projectId);
     }
