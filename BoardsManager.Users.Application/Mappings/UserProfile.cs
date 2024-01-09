@@ -4,7 +4,7 @@ using BoardsManager.Users.Domain.Entities;
 
 namespace BoardsManager.Users.Application.Mappings
 {
-    internal class UserProfile : Profile
+    public class UserProfile : Profile
     {
         public UserProfile()
         {
