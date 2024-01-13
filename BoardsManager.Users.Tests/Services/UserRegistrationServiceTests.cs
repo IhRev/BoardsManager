@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BoardsManager.Users.Application.Services;
 using BoardsManager.Users.Core.Abstractions;
+using BoardsManager.Users.Core.DTO;
 using BoardsManager.Users.Domain.Entities;
 using BoardsManager.Users.Domain.Repositories;
 using NSubstitute;
@@ -36,10 +37,10 @@ namespace BoardsManager.Users.Tests.Services
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.UpdateUserAsync(user).Returns(true);
 
-            //Assert
+            //Act
             bool actual = await sut.AddUserToProjectAsync(projectId, userId);
 
-            //Act
+            //Assert
             Assert.IsTrue(actual);
         }
 
@@ -53,10 +54,10 @@ namespace BoardsManager.Users.Tests.Services
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.UpdateUserAsync(user).Returns(false);
 
-            //Assert
+            //Act
             bool actual = await sut.AddUserToProjectAsync(projectId, userId);
 
-            //Act
+            //Assert
             Assert.IsFalse(actual);
         }
 
@@ -68,12 +69,165 @@ namespace BoardsManager.Users.Tests.Services
             string projectId = "projectId";
             userRepository.GetUserByIdAsync(userId).Returns((User?)null);
 
-            //Assert
+            //Act
             bool actual = await sut.AddUserToProjectAsync(projectId, userId);
 
-            //Act
+            //Assert
             await userRepository.DidNotReceive().UpdateUserAsync(Arg.Any<User>());
             Assert.IsFalse(actual);
+        }
+      
+        [TestMethod]
+        public async Task CreateUserAsync_ShouldReturnFalse_IfUserNotCreated()
+        {
+            //Arrange
+
+            //Act
+            bool actual = await CreateUser(false);
+
+            //Assert
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public async Task CreateUserAsync_ShouldReturnTrue_IfUserCreated()
+        {
+            //Arrange
+
+            //Act
+            bool actual = await CreateUser(true);
+
+            //Assert
+            Assert.IsTrue(actual);
+        }
+
+        private Task<bool> CreateUser(bool isCreated)
+        {
+            //Arrange
+            UserDTO userDTO = new UserDTO();
+            User user = new User();
+            mapper.Map<User>(userDTO).Returns(user);
+            userRepository.AddUserAsync(user).Returns(isCreated);
+
+            //Act
+            return sut.CreateUserAsync(userDTO);
+        }
+
+        [TestMethod]
+        public async Task ChangeUserPasswordAsync_ShouldReturnFalse_IfUserNotFound()
+        {
+            //Arrange
+            string userId = "userId";
+            string currentPassword = "123";
+            string newPassword = "12345";
+            userRepository.GetUserByIdAsync(userId).Returns((User?)null);
+
+            //Act
+            bool actual = await sut.ChangeUserPasswordAsync(userId, currentPassword, newPassword);
+
+            //Assert
+            await userRepository.DidNotReceive().UpdateUserAsync(Arg.Any<User>());
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public async Task ChangeUserPasswordAsync_ShouldReturnFalse_IfUserFoundButCantBeUpdated()
+        {
+            //Arrange
+            string userId = "userId";
+            string currentPassword = "123";
+            string newPassword = "12345";
+            User user = new User();
+            userRepository.GetUserByIdAsync(userId).Returns(user);
+            userRepository.ChangePasswordAsync(user, currentPassword, newPassword).Returns(false);
+
+            //Act
+            bool actual = await sut.ChangeUserPasswordAsync(userId, currentPassword, newPassword);
+
+            //Assert
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public async Task ChangeUserPasswordAsync_ShouldReturnTrue_IfUserFoundAndUpdated()
+        {
+            //Arrange
+            string userId = "userId";
+            string currentPassword = "123";
+            string newPassword = "12345";
+            User user = new User();
+            userRepository.GetUserByIdAsync(userId).Returns(user);
+            userRepository.ChangePasswordAsync(user, currentPassword, newPassword).Returns(true);
+
+            //Act
+            bool actual = await sut.ChangeUserPasswordAsync(userId, currentPassword, newPassword);
+
+            //Assert
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        public async Task UpdateUserAsync_ShouldReturnFalse_IfUserNotFound()
+        {
+            //Arrange
+            UserDTO userDTO = new UserDTO()
+            {
+                Id = "id"
+            };
+            userRepository.GetUserByIdAsync(userDTO.Id).Returns((User?)null);
+
+            //Act
+            bool actual = await sut.UpdateUserAsync(userDTO);
+
+            //Assert
+            Assert.IsFalse(actual);
+            await userRepository.DidNotReceive().UpdateUserAsync(Arg.Any<User>());
+        }
+
+        [TestMethod]
+        public async Task UpdateUserAsync_ShouldReturnFalse_IfUserFoundButCantBeUpdated()
+        {
+            //Arrange
+            UserDTO userDTO = new UserDTO()
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                Id = "id"
+            };
+            User user = new User();
+            userRepository.GetUserByIdAsync(userDTO.Id).Returns(user);
+            userRepository.UpdateUserAsync(Arg.Is<User>(u =>
+                u.Equals(user) && u.FirstName == userDTO.FirstName && u.LastName == userDTO.LastName
+            )).Returns(false);
+
+            //Act
+            bool actual = await sut.UpdateUserAsync(userDTO);
+
+            //Assert
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public async Task UpdateUserAsync_ShouldReturnTrue_IfUserFoundAndUpdated()
+        {
+            //Arrange
+            UserDTO userDTO = new UserDTO()
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                Id = "id"
+            };
+            User user = new User();
+            userRepository.GetUserByIdAsync(userDTO.Id).Returns(user);
+            userRepository.UpdateUserAsync(Arg.Is<User>(u => 
+                u.Equals(user) && u.FirstName == userDTO.FirstName && u.LastName == userDTO.LastName
+            )).Returns(true);
+
+            //Act
+            bool actual = await sut.UpdateUserAsync(userDTO);
+
+            //Assert
+            Assert.IsTrue(actual);
         }
     }
 }

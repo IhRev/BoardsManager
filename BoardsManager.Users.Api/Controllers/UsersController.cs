@@ -36,7 +36,7 @@ namespace BoardsManager.Users.Api.Controllers
             }
         }
 
-        [HttpGet("user/{userId}")]
+        [HttpGet("/{userId}")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUser([FromRoute] string userId)
         {
             try
