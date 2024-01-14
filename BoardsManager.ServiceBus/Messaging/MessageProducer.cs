@@ -1,6 +1,4 @@
-﻿using BoardsManager.Core.Abstractions;
-
-namespace BoardsManager.ServiceBus.Messaging
+﻿namespace BoardsManager.ServiceBus.Messaging
 {
     public class MessageProducer
     {

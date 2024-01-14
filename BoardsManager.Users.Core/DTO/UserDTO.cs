@@ -1,8 +1,8 @@
 ﻿namespace BoardsManager.Users.Core.DTO
 {
-    internal class UserDTO
+    public class UserDTO
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string FirstName { get; set; } = null!;
 
