@@ -37,7 +37,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpGet("/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUser([FromRoute] string userId)
+        public async Task<ActionResult<UserDTO>> GetUser([FromRoute] string userId)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<bool>> AddUser([FromBody] UserDTO user)
+        public async Task<ActionResult> AddUser([FromBody] UserDTO user)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPut("assign_to_project")]
-        public async Task<ActionResult<bool>> AssignUserToProject([FromQuery]string projectId, [FromQuery]string userId)
+        public async Task<ActionResult> AssignUserToProject([FromQuery]string projectId, [FromQuery]string userId)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPut("change_password")]
-        public async Task<ActionResult<bool>> ChangeUserPassword([FromQuery] string userId, [FromQuery] string currentPassword, [FromQuery] string newPassword)
+        public async Task<ActionResult> ChangeUserPassword([FromQuery] string userId, [FromQuery] string currentPassword, [FromQuery] string newPassword)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult<bool>> UpdateUser([FromBody] UserDTO user)
+        public async Task<ActionResult> UpdateUser([FromBody] UserDTO user)
         {
             try
             {

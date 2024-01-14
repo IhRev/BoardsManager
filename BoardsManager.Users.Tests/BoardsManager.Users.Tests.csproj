@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BoardsManager.Users.Api\BoardsManager.Users.Api.csproj" />
     <ProjectReference Include="..\BoardsManager.Users.Application\BoardsManager.Users.Application.csproj" />
   </ItemGroup>
 
