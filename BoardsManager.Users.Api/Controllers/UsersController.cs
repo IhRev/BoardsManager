@@ -1,33 +1,22 @@
 ﻿using BoardsManager.Users.Core.Abstractions;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardsManager.Users.Api.Controllers
 {
     [ApiController]
     [Route("users")]
-    public class UsersController : ControllerBase
+    public class UsersController(
+        IUserQueryService userQueryService,
+        IUserRegistrationService userRegistrationService,
+        ILogger logger) : ControllerBase
     {
-        private readonly IUserQueryService userQueryService;
-        private readonly IUserRegistrationService userRegistrationService;
-        private readonly ILogger logger;
-
-        public UsersController(
-            IUserQueryService userQueryService, 
-            IUserRegistrationService userRegistrationService,
-            ILogger logger)
-        {
-            this.userQueryService = userQueryService;
-            this.userRegistrationService = userRegistrationService;
-            this.logger = logger;
-        }
-
         [HttpGet("project_users/{projectId}")]
-        public ActionResult<IEnumerable<UserDTO>> GetUsers([FromRoute] string projectId)
+        public ActionResult<IEnumerable<UserDto>> GetUsers([FromRoute] string projectId)
         {
             try
             {
-                IEnumerable<UserDTO> users = userQueryService.GetUsersByProjectId(projectId);
+                IEnumerable<UserDto> users = userQueryService.GetUsersByProjectId(projectId);
                 return Ok(users);
             }
             catch (Exception e)
@@ -37,11 +26,11 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpGet("/{userId}")]
-        public async Task<ActionResult<UserDTO>> GetUser([FromRoute] string userId)
+        public async Task<ActionResult<UserDto>> GetUser([FromRoute] string userId)
         {
             try
             {
-                UserDTO? user = await userQueryService.GetUserByIdAsync(userId);
+                UserDto? user = await userQueryService.GetUserByIdAsync(userId);
                 if (user == null)
                 {
                     return NotFound();
@@ -55,7 +44,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult> AddUser([FromBody] UserDTO user)
+        public async Task<ActionResult> AddUser([FromBody] UserDto user)
         {
             try
             {
@@ -109,7 +98,7 @@ namespace BoardsManager.Users.Api.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateUser([FromBody] UserDTO user)
+        public async Task<ActionResult> UpdateUser([FromBody] UserDto user)
         {
             try
             {

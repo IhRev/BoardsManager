@@ -1,6 +1,6 @@
 ﻿using BoardsManager.Users.Api.Controllers;
 using BoardsManager.Users.Core.Abstractions;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,11 +36,11 @@ namespace BoardsManager.Users.Tests.Controllers
         {
             //Arrange
             string projId = "projId";
-            List<UserDTO> expected = new List<UserDTO>();
+            List<UserDto> expected = [];
             userQueryService.GetUsersByProjectId(projId).Returns(expected);
 
             //Act
-            ActionResult<IEnumerable<UserDTO>> actual = sut.GetUsers(projId);
+            ActionResult<IEnumerable<UserDto>> actual = sut.GetUsers(projId);
 
             //Assert
             AssertOkObjectResult(expected, actual);
@@ -54,7 +54,7 @@ namespace BoardsManager.Users.Tests.Controllers
             userQueryService.GetUsersByProjectId(projId).Throws<Exception>();
 
             //Act
-            ActionResult<IEnumerable<UserDTO>> actual = sut.GetUsers(projId);
+            ActionResult<IEnumerable<UserDto>> actual = sut.GetUsers(projId);
 
             //Assert
             CheckInternalServerError(actual);
@@ -65,11 +65,11 @@ namespace BoardsManager.Users.Tests.Controllers
         {
             //Arrange
             string userId = "userId";
-            UserDTO expected = new UserDTO();
+            UserDto expected = new();
             userQueryService.GetUserByIdAsync(userId).Returns(expected);
 
             //Act
-            ActionResult<UserDTO> actual = await sut.GetUser(userId);
+            ActionResult<UserDto> actual = await sut.GetUser(userId);
 
             //Assert
             AssertOkObjectResult(expected, actual);
@@ -80,10 +80,10 @@ namespace BoardsManager.Users.Tests.Controllers
         {
             //Arrange
             string userId = "userId";
-            userQueryService.GetUserByIdAsync(userId).Returns((UserDTO?)null);
+            userQueryService.GetUserByIdAsync(userId).Returns((UserDto?)null);
 
             //Act
-            ActionResult<UserDTO> actual = await sut.GetUser(userId);
+            ActionResult<UserDto> actual = await sut.GetUser(userId);
 
             //Assert
             Assert.IsInstanceOfType<NotFoundResult>(actual.Result);
@@ -97,13 +97,13 @@ namespace BoardsManager.Users.Tests.Controllers
             userQueryService.GetUserByIdAsync(userId).ThrowsAsync<Exception>();
 
             //Act
-            ActionResult<UserDTO> actual = await sut.GetUser(userId);
+            ActionResult<UserDto> actual = await sut.GetUser(userId);
 
             //Assert
             CheckInternalServerError(actual);
         }
 
-        private void AssertOkObjectResult<T>(T expected, ActionResult<T> actual)
+        private static void AssertOkObjectResult<T>(T expected, ActionResult<T> actual)
         {
             Assert.IsInstanceOfType<OkObjectResult>(actual.Result);
             OkObjectResult? result = actual.Result as OkObjectResult;
@@ -116,7 +116,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task AddUser_ShouldReturnCreatedResult_IfUserWasCraeted()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.CreateUserAsync(user).Returns(true);
 
             //Act
@@ -130,7 +130,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task AddUser_ShouldReturnUnprocessableEntityResult_IfUserWasntCreated()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.CreateUserAsync(user).Returns(false);
 
             //Act
@@ -144,7 +144,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task AddUser_ShouldReturnStatusCode500_IfExceptionWasThrown()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.CreateUserAsync(user).ThrowsAsync<Exception>();
 
             //Act
@@ -251,7 +251,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task UpdateUser_ShouldReturnOkResult_IfUserWasUpdated()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.UpdateUserAsync(user).Returns(true);
 
             //Act
@@ -265,7 +265,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task UpdateUser_ShouldReturnUnprocessableEntityResult_IfUserWasntUpdated()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.UpdateUserAsync(user).Returns(false);
 
             //Act
@@ -279,7 +279,7 @@ namespace BoardsManager.Users.Tests.Controllers
         public async Task UpdateUser_ShouldReturnStatusCode500_IfExceptionWasThrown()
         {
             //Arrange
-            UserDTO user = new UserDTO();
+            UserDto user = new();
             userRegistrationService.UpdateUserAsync(user).ThrowsAsync<Exception>();
 
             //Act

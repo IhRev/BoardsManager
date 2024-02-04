@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BoardsManager.Users.Application.Services;
 using BoardsManager.Users.Core.Abstractions;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using BoardsManager.Users.Domain.Entities;
 using BoardsManager.Users.Domain.Repositories;
 using NSubstitute;
@@ -13,7 +13,7 @@ namespace BoardsManager.Users.Tests.Services
     public class UserRegistrationServiceTests
     {
         [AllowNull]
-        private IUserRegistrationService sut;
+        private UserRegistrationService sut;
         [AllowNull]
         private IUserRepository userRepository;
         [AllowNull]
@@ -33,7 +33,7 @@ namespace BoardsManager.Users.Tests.Services
             //Arrange
             string userId = "userId";
             string projectId = "projectId";
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.UpdateUserAsync(user).Returns(true);
 
@@ -50,7 +50,7 @@ namespace BoardsManager.Users.Tests.Services
             //Arrange
             string userId = "userId";
             string projectId = "projectId";
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.UpdateUserAsync(user).Returns(false);
 
@@ -104,8 +104,8 @@ namespace BoardsManager.Users.Tests.Services
         private Task<bool> CreateUser(bool isCreated)
         {
             //Arrange
-            UserDTO userDTO = new UserDTO();
-            User user = new User();
+            UserDto userDTO = new();
+            User user = new();
             mapper.Map<User>(userDTO).Returns(user);
             userRepository.AddUserAsync(user).Returns(isCreated);
 
@@ -137,7 +137,7 @@ namespace BoardsManager.Users.Tests.Services
             string userId = "userId";
             string currentPassword = "123";
             string newPassword = "12345";
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.ChangePasswordAsync(user, currentPassword, newPassword).Returns(false);
 
@@ -155,7 +155,7 @@ namespace BoardsManager.Users.Tests.Services
             string userId = "userId";
             string currentPassword = "123";
             string newPassword = "12345";
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userId).Returns(user);
             userRepository.ChangePasswordAsync(user, currentPassword, newPassword).Returns(true);
 
@@ -170,7 +170,7 @@ namespace BoardsManager.Users.Tests.Services
         public async Task UpdateUserAsync_ShouldReturnFalse_IfUserNotFound()
         {
             //Arrange
-            UserDTO userDTO = new UserDTO()
+            UserDto userDTO = new()
             {
                 Id = "id"
             };
@@ -188,13 +188,13 @@ namespace BoardsManager.Users.Tests.Services
         public async Task UpdateUserAsync_ShouldReturnFalse_IfUserFoundButCantBeUpdated()
         {
             //Arrange
-            UserDTO userDTO = new UserDTO()
+            UserDto userDTO = new()
             {
                 FirstName = "FirstName",
                 LastName = "LastName",
                 Id = "id"
             };
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userDTO.Id).Returns(user);
             userRepository.UpdateUserAsync(Arg.Is<User>(u =>
                 u.Equals(user) && u.FirstName == userDTO.FirstName && u.LastName == userDTO.LastName
@@ -211,13 +211,13 @@ namespace BoardsManager.Users.Tests.Services
         public async Task UpdateUserAsync_ShouldReturnTrue_IfUserFoundAndUpdated()
         {
             //Arrange
-            UserDTO userDTO = new UserDTO()
+            UserDto userDTO = new()
             {
                 FirstName = "FirstName",
                 LastName = "LastName",
                 Id = "id"
             };
-            User user = new User();
+            User user = new();
             userRepository.GetUserByIdAsync(userDTO.Id).Returns(user);
             userRepository.UpdateUserAsync(Arg.Is<User>(u => 
                 u.Equals(user) && u.FirstName == userDTO.FirstName && u.LastName == userDTO.LastName
