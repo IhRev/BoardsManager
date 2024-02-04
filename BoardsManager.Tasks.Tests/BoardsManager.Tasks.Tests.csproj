@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BoardsManager.Projects.Api\BoardsManager.Projects.Api.csproj" />
+    <ProjectReference Include="..\BoardsManager.Tasks.Api\BoardsManager.Tasks.Api.csproj" />
   </ItemGroup>
 
 </Project>
