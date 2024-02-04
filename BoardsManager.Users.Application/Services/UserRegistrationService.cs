@@ -1,22 +1,13 @@
 ﻿using AutoMapper;
 using BoardsManager.Users.Core.Abstractions;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using BoardsManager.Users.Domain.Entities;
 using BoardsManager.Users.Domain.Repositories;
 
 namespace BoardsManager.Users.Application.Services
 {
-    public class UserRegistrationService : IUserRegistrationService
+    public class UserRegistrationService(IUserRepository userRepository, IMapper mapper) : IUserRegistrationService
     {
-        private readonly IUserRepository userRepository;
-        private readonly IMapper mapper;
-
-        public UserRegistrationService(IUserRepository userRepository, IMapper mapper)
-        {
-            this.userRepository = userRepository;
-            this.mapper = mapper;
-        }
-
         public async Task<bool> AddUserToProjectAsync(string projectId, string userId)
         {
             User? user = await GetUser(userId);
@@ -28,7 +19,7 @@ namespace BoardsManager.Users.Application.Services
             return await userRepository.UpdateUserAsync(user);
         }
 
-        public Task<bool> CreateUserAsync(UserDTO userDTO)
+        public Task<bool> CreateUserAsync(UserDto userDTO)
         {
             User user = mapper.Map<User>(userDTO);
             return userRepository.AddUserAsync(user);
@@ -44,7 +35,7 @@ namespace BoardsManager.Users.Application.Services
             return await userRepository.ChangePasswordAsync(user, currentPassword, newPassword);
         }
 
-        public async Task<bool> UpdateUserAsync(UserDTO userDTO)
+        public async Task<bool> UpdateUserAsync(UserDto userDTO)
         {
             User? user = await GetUser(userDTO.Id);
             if (user == null)

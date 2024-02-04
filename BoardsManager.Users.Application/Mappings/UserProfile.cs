@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using BoardsManager.Users.Domain.Entities;
 
 namespace BoardsManager.Users.Application.Mappings
@@ -8,7 +8,7 @@ namespace BoardsManager.Users.Application.Mappings
     {
         public UserProfile()
         {
-            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }

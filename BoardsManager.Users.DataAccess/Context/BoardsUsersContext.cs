@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BoardsManager.Users.DataAccess.Context
 {
-    public class BoardsUsersContext : IdentityDbContext<User>
+    public class BoardsUsersContext(DbContextOptions<BoardsUsersContext> options) : IdentityDbContext<User>(options)
     {
-        public BoardsUsersContext(DbContextOptions<BoardsUsersContext> options) : base(options)
-        {
-        }
     }
 }

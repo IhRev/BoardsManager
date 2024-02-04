@@ -1,4 +1,4 @@
-﻿using BoardsManager.Users.Core.DTO;
+﻿using BoardsManager.Users.Core.Dto;
 
 namespace BoardsManager.Users.Core.Abstractions
 {
@@ -8,8 +8,8 @@ namespace BoardsManager.Users.Core.Abstractions
 
         Task<bool> ChangeUserPasswordAsync(string userId, string currentPassword, string newPassword);
         
-        Task<bool> CreateUserAsync(UserDTO userDTO);
+        Task<bool> CreateUserAsync(UserDto userDTO);
        
-        Task<bool> UpdateUserAsync(UserDTO userDTO);
+        Task<bool> UpdateUserAsync(UserDto userDTO);
     }
 }

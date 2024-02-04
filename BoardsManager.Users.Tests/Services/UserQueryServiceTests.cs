@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BoardsManager.Users.Application.Services;
 using BoardsManager.Users.Core.Abstractions;
-using BoardsManager.Users.Core.DTO;
+using BoardsManager.Users.Core.Dto;
 using BoardsManager.Users.Domain.Entities;
 using BoardsManager.Users.Domain.Repositories;
 using NSubstitute;
@@ -13,7 +13,7 @@ namespace BoardsManager.Users.Tests.Services
     public class UserQueryServiceTests
     {
         [AllowNull]
-        private IUserQueryService sut;
+        private UserQueryService sut;
         [AllowNull]
         private IUserRepository userRepository;
         [AllowNull]
@@ -34,14 +34,14 @@ namespace BoardsManager.Users.Tests.Services
             string projectId = "projId";
             IEnumerable<User> users = new List<User>();
 
-            IEnumerable<UserDTO> expected = new List<UserDTO>();
+            IEnumerable<UserDto> expected = new List<UserDto>();
 
             userRepository.GetUsersByProjectId(projectId).Returns(users);
 
-            mapper.Map<IEnumerable<UserDTO>>(users).Returns(expected);
+            mapper.Map<IEnumerable<UserDto>>(users).Returns(expected);
 
             //Act
-            IEnumerable<UserDTO> actual = sut.GetUsersByProjectId(projectId);
+            IEnumerable<UserDto> actual = sut.GetUsersByProjectId(projectId);
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -52,16 +52,16 @@ namespace BoardsManager.Users.Tests.Services
         {
             //Arrange
             string userId = "projId";
-            User? user = new User();
+            User? user = new();
 
-            UserDTO? expected = new UserDTO();
+            UserDto? expected = new();
 
             userRepository.GetUserByIdAsync(userId).Returns(user);
 
-            mapper.Map<UserDTO>(user).Returns(expected);
+            mapper.Map<UserDto>(user).Returns(expected);
 
             //Act
-            UserDTO? actual = await sut.GetUserByIdAsync(userId);
+            UserDto? actual = await sut.GetUserByIdAsync(userId);
 
             //Assert
             Assert.AreEqual(expected, actual);

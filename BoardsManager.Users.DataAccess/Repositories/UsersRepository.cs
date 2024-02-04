@@ -4,12 +4,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BoardsManager.Users.DataAccess.Repositories
 {
-    public class UsersRepository : IUserRepository
+    public class UsersRepository(UserManager<User> userManager) : IUserRepository
     {
-        private readonly UserManager<User> userManager;
-
-        public UsersRepository(UserManager<User> userManager) => this.userManager = userManager;
-
         public async Task<bool> AddUserAsync(User user)
         {
             IdentityResult result = await userManager.CreateAsync(user);

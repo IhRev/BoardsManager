@@ -1,6 +1,6 @@
-﻿namespace BoardsManager.Users.Core.DTO
+﻿namespace BoardsManager.Users.Core.Dto
 {
-    public class UserDTO
+    public class UserDto
     {
         public string Id { get; set; } = string.Empty;
 
