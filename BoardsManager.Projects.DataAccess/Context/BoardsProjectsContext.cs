@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BoardsManager.Projects.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardsManager.Projects.DataAccess.Context
 {
-    public class BoardsProjectsContext : DbContext
+    public partial class BoardsProjectsContext : DbContext
     {
+        public virtual DbSet<Project> Projects { get; set; }
     }
 }

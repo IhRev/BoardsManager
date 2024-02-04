@@ -6,7 +6,8 @@ using BoardsManager.Users.Domain.Repositories;
 
 namespace BoardsManager.Users.Application.Services
 {
-    public class UserRegistrationService(IUserRepository userRepository, IMapper mapper) : IUserRegistrationService
+    public class UserRegistrationService(IUserRepository userRepository, IMapper mapper) 
+        : IUserRegistrationService
     {
         public async Task<bool> AddUserToProjectAsync(string projectId, string userId)
         {
@@ -19,9 +20,9 @@ namespace BoardsManager.Users.Application.Services
             return await userRepository.UpdateUserAsync(user);
         }
 
-        public Task<bool> CreateUserAsync(UserDto userDTO)
+        public Task<bool> CreateUserAsync(UserDto userDto)
         {
-            User user = mapper.Map<User>(userDTO);
+            User user = mapper.Map<User>(userDto);
             return userRepository.AddUserAsync(user);
         }
 
@@ -35,15 +36,15 @@ namespace BoardsManager.Users.Application.Services
             return await userRepository.ChangePasswordAsync(user, currentPassword, newPassword);
         }
 
-        public async Task<bool> UpdateUserAsync(UserDto userDTO)
+        public async Task<bool> UpdateUserAsync(UserDto userDto)
         {
-            User? user = await GetUser(userDTO.Id);
+            User? user = await GetUser(userDto.Id);
             if (user == null)
             {
                 return false;
             }
-            user.FirstName = userDTO.FirstName;
-            user.LastName = userDTO.LastName;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
             return await userRepository.UpdateUserAsync(user);
         }
 

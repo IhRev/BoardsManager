@@ -8,8 +8,8 @@ namespace BoardsManager.Users.Core.Abstractions
 
         Task<bool> ChangeUserPasswordAsync(string userId, string currentPassword, string newPassword);
         
-        Task<bool> CreateUserAsync(UserDto userDTO);
+        Task<bool> CreateUserAsync(UserDto userDto);
        
-        Task<bool> UpdateUserAsync(UserDto userDTO);
+        Task<bool> UpdateUserAsync(UserDto userDto);
     }
 }

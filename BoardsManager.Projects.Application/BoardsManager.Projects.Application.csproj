@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BoardsManager.Projects.Core\BoardsManager.Projects.Core.csproj" />
+    <ProjectReference Include="..\BoardsManager.Projects.Domain\BoardsManager.Projects.Domain.csproj" />
   </ItemGroup>
 
 </Project>
